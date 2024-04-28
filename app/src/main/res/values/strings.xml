@@ -1,3 +1,9 @@
 <resources>
-    <string name="app_name">My Application</string>
+    <string name="app_name">Moje Financie</string>
+    <string name="celkovy_prijem">Celkovy príjem:</string>
+    <string name="celkov_vydavky">Celkové výdavky:</string>
+    <string name="hodnota_akcii">Hodnota akcií:</string>
+    <string name="zisk_z_kryptomien">Zisk z kryptomien:</string>
+    <string name="hodnota_kryptomien">Hodnota kryptomien:</string>
+    <string name="zisk_z_akcii">Zisk z akcií:</string>
 </resources>

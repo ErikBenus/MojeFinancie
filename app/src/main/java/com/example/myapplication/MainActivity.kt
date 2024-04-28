@@ -5,7 +5,9 @@ import android.service.autofill.OnClickAction
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -25,10 +27,12 @@ import androidx.compose.ui.text.style.LineHeightStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.compose.AppTheme
+import com.example.myapplication.Screens.HomeScreens.Home
 
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.text.TextStyle
 import com.example.compose.primaryLight
+import com.example.myapplication.Screens.Navigation.AppNavigation
 
 
 class MainActivity : ComponentActivity() {
@@ -41,7 +45,9 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    Greeting()
+                    AppNavigation()
+                    //Home()
+                    //Greeting()
                 }
             }
         }
@@ -52,23 +58,26 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun Greeting(modifier: Modifier = Modifier) {
-
+    Column (
+        modifier = Modifier.fillMaxSize(),
+        verticalArrangement = Arrangement.SpaceAround
+    ){
         Text(
             text = "Moje Financie",
             modifier = modifier
                 .fillMaxWidth()
-                .wrapContentWidth(align = Alignment.CenterHorizontally)
-                .wrapContentHeight(align = Alignment.CenterVertically),
-            //style = TextStyle(color = primaryLight),
+                .wrapContentWidth(align = Alignment.Start)
+                .background(MaterialTheme.colorScheme.primary)
+                .padding(12.dp),
+
             style = MaterialTheme.typography.headlineLarge,
-            color = primaryLight
+            color = MaterialTheme.colorScheme.onPrimary
         )
 
         Text(
             text = "Moje Financie (Mensie)",
             modifier = modifier
                 .fillMaxWidth()
-                .padding(top = 60.dp)
                 .wrapContentWidth(align = Alignment.CenterHorizontally)
                 .wrapContentHeight(align = Alignment.CenterVertically),
             style = MaterialTheme.typography.titleLarge,
@@ -79,7 +88,6 @@ fun Greeting(modifier: Modifier = Modifier) {
             text = "Moje Financie (EsteMensie)",
             modifier = modifier
                 .fillMaxWidth()
-                .padding(top = 160.dp)
                 .wrapContentWidth(align = Alignment.CenterHorizontally)
                 .wrapContentHeight(align = Alignment.CenterVertically),
             style = MaterialTheme.typography.bodyLarge,
@@ -90,7 +98,6 @@ fun Greeting(modifier: Modifier = Modifier) {
             text = "Moje Financie (Body-Large)",
             modifier = modifier
                 .fillMaxWidth()
-                .padding(top = 200.dp)
                 .wrapContentWidth(align = Alignment.CenterHorizontally)
                 .wrapContentHeight(align = Alignment.CenterVertically),
             style = MaterialTheme.typography.bodyLarge,
@@ -101,7 +108,6 @@ fun Greeting(modifier: Modifier = Modifier) {
             text = "Moje Financie (Body-Small)",
             modifier = modifier
                 .fillMaxWidth()
-                .padding(top = 240.dp)
                 .wrapContentWidth(align = Alignment.CenterHorizontally)
                 .wrapContentHeight(align = Alignment.CenterVertically),
             style = MaterialTheme.typography.bodySmall,
@@ -112,7 +118,6 @@ fun Greeting(modifier: Modifier = Modifier) {
             text = "Moje Financie (Label Large)",
             modifier = modifier
                 .fillMaxWidth()
-                .padding(top = 280.dp)
                 .wrapContentWidth(align = Alignment.CenterHorizontally)
                 .wrapContentHeight(align = Alignment.CenterVertically),
             style = MaterialTheme.typography.labelLarge,
@@ -123,12 +128,13 @@ fun Greeting(modifier: Modifier = Modifier) {
             text = "Moje Financie (Body-Small)",
             modifier = modifier
                 .fillMaxWidth()
-                .padding(top = 320.dp)
                 .wrapContentWidth(align = Alignment.CenterHorizontally)
                 .wrapContentHeight(align = Alignment.CenterVertically),
             style = MaterialTheme.typography.headlineSmall,
             color = MaterialTheme.colorScheme.primaryContainer
         )
+    }
+
 }
 
 
