@@ -1,4 +1,4 @@
-package com.example.myapplication.Screens.Navigation
+package com.example.myapplication.screens.navigation
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AddCircle
@@ -37,5 +37,4 @@ val listopfNavItems = listOf(
         icon = Icons.Default.Star,
         route = Screens.CryptoScreen.name
     ),
-
 )

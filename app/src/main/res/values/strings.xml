@@ -6,4 +6,9 @@
     <string name="zisk_z_kryptomien">Zisk z kryptomien:</string>
     <string name="hodnota_kryptomien">Hodnota kryptomien:</string>
     <string name="zisk_z_akcii">Zisk z akcií:</string>
+    <string name="back_button">Back</string>
+    <string name="title_home">Moje Financie</string>
+    <string name="title_finance">Príjmy a Výdavky</string>
+    <string name="add_item">Add Item</string>
+    <string name="pridaj_transakciu">Pridaj Transakciu</string>
 </resources>

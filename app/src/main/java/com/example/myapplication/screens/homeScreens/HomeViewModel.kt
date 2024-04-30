@@ -1,8 +1,10 @@
-package com.example.myapplication.Screens.HomeScreens
+package com.example.myapplication.screens.homeScreens
 
 import androidx.lifecycle.ViewModel
+import com.example.myapplication.data.PrevodRepository
 
-class HomeViewModel : ViewModel() {
+class HomeViewModel : ViewModel(
+) {
     var celkovyPrijem = 470.50
     var celkoveVydavky = 97.50
     var hodnotaAkcii = 14_350.50

@@ -1,38 +1,30 @@
 package com.example.myapplication
 
 import android.os.Bundle
-import android.service.autofill.OnClickAction
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentWidth
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.rememberTextMeasurer
-import androidx.compose.ui.text.style.LineHeightStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.example.compose.AppTheme
-import com.example.myapplication.Screens.HomeScreens.Home
+
 
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.text.TextStyle
-import com.example.compose.primaryLight
-import com.example.myapplication.Screens.Navigation.AppNavigation
+import com.example.myapplication.screens.financeScreens.AddTransactionScreen
+import com.example.myapplication.screens.financeScreens.FinanceScreen
+import com.example.myapplication.screens.navigation.AppNavigation
+import com.example.myapplication.ui.theme.AppTheme
 
 
 class MainActivity : ComponentActivity() {
@@ -45,6 +37,7 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
+                    //FinanceScreen()
                     AppNavigation()
                     //Home()
                     //Greeting()

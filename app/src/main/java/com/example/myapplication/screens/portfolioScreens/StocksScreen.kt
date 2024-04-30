@@ -1,4 +1,4 @@
-package com.example.myapplication.Screens.FinanceScreens
+package com.example.myapplication.screens.portfolioScreens
 
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.wrapContentWidth
@@ -9,12 +9,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 
 @Composable
-fun Finance(
+fun Stock(
     modifier: Modifier = Modifier,
 
     ) {
     Text(
-        text = "Finance",
+        text = "Stocks",
         style = MaterialTheme.typography.headlineSmall,
         color = MaterialTheme.colorScheme.secondary,
         modifier = Modifier
