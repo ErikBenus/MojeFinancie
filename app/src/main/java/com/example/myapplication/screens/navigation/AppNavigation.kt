@@ -1,5 +1,6 @@
 package com.example.myapplication.screens.navigation
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.material3.ExperimentalMaterial3Api
 
@@ -18,6 +19,7 @@ import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.TopAppBarScrollBehavior
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -115,13 +117,18 @@ fun AppTopBar(
         CenterAlignedTopAppBar(
             title = {
                 Text(
-                    text = title.uppercase(),
-                    style = MaterialTheme.typography.titleLarge,
-                    color = MaterialTheme.colorScheme.primary,
+                    text = title,
+                    style = MaterialTheme.typography.titleMedium,
+                    color = MaterialTheme.colorScheme.onPrimary,
                 )
                     },
             modifier = modifier,
             scrollBehavior = scrollBehavior,
+            colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
+                containerColor = MaterialTheme.colorScheme.primary, // Change background color to primary
+                navigationIconContentColor = MaterialTheme.colorScheme.onPrimary, // Change navigation icon color to onPrimary
+                actionIconContentColor = MaterialTheme.colorScheme.onPrimary // Change action icon color to onPrimary (if any)
+            ),
             navigationIcon = {
                 if (canNavigateBack) {
                     IconButton(onClick = navigateUp) {

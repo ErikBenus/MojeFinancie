@@ -1,43 +1,55 @@
 package com.example.myapplication.screens.homeScreens
 
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.example.myapplication.data.Prevod
 import com.example.myapplication.data.PrevodRepository
+import com.example.myapplication.data.TypPrevodu
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.flow.collect
+import java.text.NumberFormat
 
-class HomeViewModel : ViewModel(
+class HomeViewModel(val prevodRepository: PrevodRepository) : ViewModel(
 ) {
-    var celkovyPrijem = 470.50
-    var celkoveVydavky = 97.50
-    var hodnotaAkcii = 14_350.50
-    var ziskZAkcii = 4500.27;
-    var hodnotaKryptomien = 400.50
-    var ziskZKryptomien = - 27.50
 
-    fun getCelkovyPrijem(): String {
-        return "$celkovyPrijem €"
+    var homeUiState by mutableStateOf(HomeUiState())
+        private set
+
+
+    init {
+        viewModelScope.launch {
+            prevodRepository.getAllPrevodyByTypeStream(TypPrevodu.PRIJEM).combine(
+                prevodRepository.getAllPrevodyByTypeStream(TypPrevodu.VYDAJ)
+            ) { prijmy, vydaje ->
+                val celkovePrijmy = prijmy.sumOf { it.hodnota }
+                val celkoveVydaje = vydaje.sumOf { -it.hodnota }
+                homeUiState = homeUiState.copy(
+                    celkovePrijmy = celkovePrijmy,
+                    celkoveVydaje = celkoveVydaje
+
+                )
+            }.collect()
+
+//            prevodRepository.getAllPrevodyByTypeStream(TypPrevodu.PRIJEM).collect { prijmy ->
+//                homeUiState = homeUiState.copy(celkovePrijmy = prijmy.sumOf { it.hodnota })
+//            }
+//
+//            prevodRepository.getAllPrevodyByTypeStream(TypPrevodu.VYDAJ).collect { vydaje ->
+//                homeUiState = homeUiState.copy(celkoveVydaje = vydaje.sumOf { -it.hodnota })
+//            }
+        }
     }
-
-    fun getCelkoveVydavky(): String {
-        return "-$celkoveVydavky €"
-    }
-
-    fun getHodnotaAkcii(): String {
-        return "$hodnotaAkcii €"
-    }
-
-    fun getZiskZAkcii(): String {
-        return "$ziskZAkcii €"
-    }
-
-    fun getHodnotaKryptomien(): String {
-        return "$hodnotaKryptomien €"
-    }
-
-    fun getZiskZKryptomien(): String {
-        return "$ziskZKryptomien €"
-    }
-
-    fun jeZaporny(hodnota: Double): Boolean {
-        return hodnota < 0
-    }
-
 }
+
+data class HomeUiState(
+    val celkovePrijmy: Double = 0.0,
+    val celkoveVydaje: Double = 0.0,
+    val hodnotaAkcii: Double = 0.0,
+    val ziskZAkcii: Double = 0.0,
+    val hodnotaKryptomien: Double = 0.0,
+    val ziskZKryptomien: Double = 0.0
+)

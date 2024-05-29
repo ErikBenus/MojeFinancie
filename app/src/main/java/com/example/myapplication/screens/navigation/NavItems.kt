@@ -15,25 +15,25 @@ data class NavItem(
 
 val listopfNavItems = listOf(
     NavItem(
-        label = "Home",
+        label = "Domov",
         icon = Icons.Default.Home,
         route = Screens.HomeScreen.name
     ),
 
     NavItem(
-        label = "Finance",
+        label = "Financie",
         icon = Icons.Default.AddCircle,
         route = Screens.FinanceScreen.name
     ),
 
     NavItem(
-        label = "Stocks",
+        label = "Portfólio",
         icon = Icons.Default.ShoppingCart,
         route = Screens.StocksScreen.name
     ),
 
     NavItem(
-        label = "Crypto",
+        label = "Kryptomeny",
         icon = Icons.Default.Star,
         route = Screens.CryptoScreen.name
     ),

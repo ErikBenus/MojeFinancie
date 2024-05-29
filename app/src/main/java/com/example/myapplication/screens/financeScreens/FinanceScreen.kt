@@ -1,62 +1,51 @@
 package com.example.myapplication.screens.financeScreens
 
 import FinanceViewModel
-import android.content.Context
-import androidx.activity.ComponentActivity
-
+import TransactionUiState
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
-import androidx.lifecycle.ViewModelStoreOwner
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentWidth
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
-import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
-
+import androidx.compose.ui.text.font.FontStyle
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.viewModelScope
-import androidx.lifecycle.viewmodel.compose.LocalViewModelStoreOwner
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import com.example.myapplication.R
-import com.example.myapplication.data.DatabazaPrevodov
 import com.example.myapplication.data.Prevod
-import com.example.myapplication.data.PrevodRepository
 import com.example.myapplication.data.TypPrevodu
-import com.example.myapplication.screens.homeScreens.HomeViewModel
-import com.example.myapplication.screens.homeScreens.Statistika
+import com.example.myapplication.screens.MyViewModelProvider
 import com.example.myapplication.screens.navigation.AppTopBar
 import com.example.myapplication.screens.navigation.Screens
-import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.StateFlow
-
+import java.text.NumberFormat
 
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun FinanceScreen(
     modifier: Modifier = Modifier,
-    navController: NavHostController
+    navController: NavHostController,
+    viewModel: FinanceViewModel = viewModel(factory = MyViewModelProvider.Factory)
 ) {
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
 
@@ -80,114 +69,126 @@ fun FinanceScreen(
                 )
             }
         }) { innerPadding ->
-        // Apply innerPadding to the content
-        FinanceStastistika(contentPadding = innerPadding)
+        FinanceStastistika(
+            transactionUiState = viewModel.transactionUiState,
+            modifier = modifier
+                .padding(innerPadding)
+                .verticalScroll(rememberScrollState())
+                .fillMaxWidth()
+        )
     }
 }
 
 @Composable
 fun FinanceStastistika(
     modifier: Modifier = Modifier,
-    contentPadding: PaddingValues = PaddingValues(0.dp),
-//    viewModel: FinanceViewModel = viewModel()
+    transactionUiState: TransactionUiState,
 ) {
-    //    val context = LocalContext.current
-//    val viewModel: FinanceViewModel =
-//        ViewModelProvider(context as ViewModelStoreOwner).get(FinanceViewModel::class.java)
-
-//    val prijmy by viewModel.prijmy.collectAsState(initial = emptyList())
-//    val vydaje by viewModel.vydaje.collectAsState(initial = emptyList())
-//    val celkovePrijmy by viewModel.celkovePrijmy.collectAsState(initial = 0.0)
-//    val celkoveVydaje by viewModel.celkoveVydaje.collectAsState(initial = 0.0)
-
     Column(
-        modifier = modifier
-            .fillMaxSize()
-            .padding(contentPadding),
+        modifier = modifier.padding(16.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp)
 ) {
-//        FinanceItem("Príjmy:", celkovePrijmy, prijmy)
-//        FinanceItem("Výdaje:", celkoveVydaje, vydaje)
 
     Text(
-        text = "Príjmy:",
+        text = stringResource(R.string.prijmy),
         style = MaterialTheme.typography.headlineMedium,
+        fontWeight = FontWeight.Bold,
         color = MaterialTheme.colorScheme.primary,
         modifier = Modifier
             .fillMaxWidth()
-            .wrapContentWidth(Alignment.CenterHorizontally)
     )
-
+        if (!transactionUiState.prijmy.isEmpty()) {
+            FinanceItem(stringResource(R.string.prijmy),transactionUiState.celkovePrijmy, transactionUiState.prijmy)
+        } else {
+            Text(
+                text = stringResource(R.string.bez_prijmov_button_plus),
+                style = MaterialTheme.typography.bodyMedium,
+                color = MaterialTheme.colorScheme.secondary,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .wrapContentWidth(Alignment.CenterHorizontally)
+            )
+        }
 
     Text(
-        text = "Výdaje:",
+        text = stringResource(R.string.vydavky),
         style = MaterialTheme.typography.headlineMedium,
+        fontWeight = FontWeight.Bold,
         color = MaterialTheme.colorScheme.error,
         modifier = Modifier
             .fillMaxWidth()
-            .wrapContentWidth(Alignment.CenterHorizontally)
     )
+        if (!transactionUiState.vydaje.isEmpty()) {
+            FinanceItem(stringResource(R.string.vydavky),transactionUiState.celkoveVydaje, transactionUiState.vydaje)
+        } else {
+            Text(
+                text = stringResource(R.string.bez_vydavkov_button_plus),
+                style = MaterialTheme.typography.bodyMedium,
+                color = MaterialTheme.colorScheme.secondary,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .wrapContentWidth(Alignment.CenterHorizontally)
+            )
+        }
 }
 }
 
-//@Composable
-//private fun FinanceItem(
-//    title: String,
-//    total: Double,
-//    items: List<Prevod>,
-//) {
-//    Column {
-//        Text(
-//            text = title,
-//            style = MaterialTheme.typography.headlineMedium,
-//            color = MaterialTheme.colorScheme.primary,
-//            modifier = Modifier
-//                .fillMaxWidth()
-//        )
-//
-//        Text(
-//            text = "Celková suma: $total",
-//            style = MaterialTheme.typography.titleMedium,
-//            color = MaterialTheme.colorScheme.secondary,
-//            modifier = Modifier.fillMaxWidth()
-//        )
-//
-//        items.forEach { prevod ->
-//            Text(
-//                text = "${prevod.nazov} - ${prevod.hodnota}",
-//                style = MaterialTheme.typography.bodyMedium,
-//                color = MaterialTheme.colorScheme.secondary,
-//                modifier = Modifier.fillMaxWidth()
-//            )
-//        }
-//    }
-//}
+@Composable
+private fun FinanceItem(
+    title: String,
+    total: Double,
+    transactions: List<Prevod>
+) {
+    Column {
+        Text(
+            text = "Celková suma: ${total.formattedPrice()}",
+            style = MaterialTheme.typography.titleMedium,
+            color = MaterialTheme.colorScheme.secondary,
+            modifier = Modifier.fillMaxWidth()
+        )
+
+        val transacationType = stringResource(R.string.vydavky)
+
+        val cardColors = if (title == transacationType) {
+            CardDefaults.cardColors(
+                containerColor = MaterialTheme.colorScheme.errorContainer,
+                contentColor = MaterialTheme.colorScheme.onErrorContainer
+            )
+        } else {
+            CardDefaults.cardColors(
+                containerColor = MaterialTheme.colorScheme.primaryContainer,
+                contentColor = MaterialTheme.colorScheme.onPrimaryContainer
+            )
+        }
+
+        Card(
+            colors = cardColors
+        ) {
+            transactions.forEach { prevod ->
+                val formattedPrice = if (title == transacationType) {
+                    "-${prevod.hodnota.formattedPrice()}"
+                } else {
+                    prevod.hodnota.formattedPrice()
+                }
+
+                Text(
+                    text = "${prevod.nazov}: $formattedPrice",
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.secondary,
+                    modifier = Modifier.fillMaxWidth()
+                        .padding(
+                            top = 6.dp,
+                            start = 16.dp,
+                            bottom = 6.dp,
+                            end = 16.dp
+                        ),
+                )
+            }
+        }
+    }
+}
 
 
-
-//@Composable
-//fun FinanceScreen(
-//    modifier: Modifier = Modifier,
-//
-//    ) {
-//    Column {
-//        Text(
-//            text = "Príjmy:",
-//            style = MaterialTheme.typography.headlineMedium,
-//            color = MaterialTheme.colorScheme.primary,
-//            modifier = Modifier
-//                .fillMaxWidth()
-//                .wrapContentWidth(Alignment.CenterHorizontally)
-//        )
-//
-//
-//        Text(
-//            text = "Výdaje:",
-//            style = MaterialTheme.typography.headlineMedium,
-//            color = MaterialTheme.colorScheme.error,
-//            modifier = Modifier
-//                .fillMaxWidth()
-//                .wrapContentWidth(Alignment.CenterHorizontally)
-//        )
-//    }
-//}
+fun Double.formattedPrice(): String {
+    return NumberFormat.getCurrencyInstance().format(this)
+}

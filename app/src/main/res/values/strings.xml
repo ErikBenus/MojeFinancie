@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name">Moje Financie</string>
-    <string name="celkovy_prijem">Celkovy príjem:</string>
+    <string name="celkovy_prijem">Celkový príjem:</string>
     <string name="celkov_vydavky">Celkové výdavky:</string>
     <string name="hodnota_akcii">Hodnota akcií:</string>
     <string name="zisk_z_kryptomien">Zisk z kryptomien:</string>
@@ -11,4 +11,15 @@
     <string name="title_finance">Príjmy a Výdavky</string>
     <string name="add_item">Add Item</string>
     <string name="pridaj_transakciu">Pridaj Transakciu</string>
+    <string name="prevody_database">prevody_database</string>
+    <string name="ulozit">Uložiť</string>
+    <string name="zadaj_nazov">Názov:</string>
+    <string name="zadaj_sumu">Suma:</string>
+    <string name="vydaj">Výdaj</string>
+    <string name="prijem">Príjem</string>
+    <string name="vydavky">Výdavky:</string>
+    <string name="prijmy">Príjmy:</string>
+    <string name="bez_vydavkov_button_plus">Super, nemáš žiadne výdavky. Pridať ich môžeš kliknutím na tlačidlo +</string>
+    <string name="bez_prijmov_button_plus">Mrzí nás to, ale nemáš žiadne príjmy. Pridať ich môžeš kliknutím na tlačidlo +</string>
+    <string name="EURO">" €"</string>
 </resources>

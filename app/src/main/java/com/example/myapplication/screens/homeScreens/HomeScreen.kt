@@ -1,6 +1,7 @@
 package com.example.myapplication.screens.homeScreens
 
 
+import TransactionUiState
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
@@ -22,14 +23,19 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelStoreOwner
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.myapplication.R
+import com.example.myapplication.screens.MyViewModelProvider
+import com.example.myapplication.screens.financeScreens.formattedPrice
 import com.example.myapplication.screens.navigation.AppTopBar
+import java.text.NumberFormat
 
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun Home(
     modifier: Modifier = Modifier,
+    viewModel: HomeViewModel = viewModel(factory = MyViewModelProvider.Factory)
 ) {
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
 
@@ -42,26 +48,25 @@ fun Home(
                 scrollBehavior = scrollBehavior
             )
         }) { innerPadding ->
-        // Apply innerPadding to the content
-        Statistika(contentPadding = innerPadding)
+        Statistika(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(innerPadding),
+            homeUiState = viewModel.homeUiState
+        )
     }
-
 }
 
 
 @Composable
 fun Statistika(
-    contentPadding: PaddingValues = PaddingValues(0.dp),
+    modifier: Modifier = Modifier,
+    homeUiState: HomeUiState
 ) {
-    val context = LocalContext.current
-    val viewModel: HomeViewModel =
-        ViewModelProvider(context as ViewModelStoreOwner).get(HomeViewModel::class.java)
 
     LazyColumn(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(contentPadding),
-        verticalArrangement = Arrangement.SpaceAround,
+        modifier = modifier.padding(top = 6.dp),
+        verticalArrangement = Arrangement.spacedBy(16.dp),
         horizontalAlignment = Alignment.CenterHorizontally
 
     ) {
@@ -72,7 +77,7 @@ fun Statistika(
                 color = MaterialTheme.colorScheme.secondary
             )
             
-            ObalStringDoKarty(text = viewModel.getCelkovyPrijem())
+            ObalStringDoKarty(homeUiState.celkovePrijmy)
             
         }
         item {
@@ -82,7 +87,7 @@ fun Statistika(
                 color = MaterialTheme.colorScheme.secondary
             )
 
-            ObalStringDoKarty(text = viewModel.getCelkoveVydavky(), true)
+            ObalStringDoKarty(homeUiState.celkoveVydaje)
             
         }
         item {
@@ -92,7 +97,7 @@ fun Statistika(
                 color = MaterialTheme.colorScheme.secondary
             )
 
-            ObalStringDoKarty(text = viewModel.getHodnotaAkcii())
+            ObalStringDoKarty(homeUiState.hodnotaAkcii)
 
         }
         item {
@@ -102,7 +107,7 @@ fun Statistika(
                 color = MaterialTheme.colorScheme.secondary
             )
 
-            ObalStringDoKarty(text = viewModel.getZiskZAkcii(), viewModel.jeZaporny(viewModel.ziskZAkcii))
+            ObalStringDoKarty(homeUiState.ziskZAkcii)
 
         }
         item {
@@ -112,7 +117,7 @@ fun Statistika(
                 color = MaterialTheme.colorScheme.secondary
             )
 
-            ObalStringDoKarty(text = viewModel.getHodnotaKryptomien())
+            ObalStringDoKarty(homeUiState.hodnotaKryptomien)
 
         }
         item {
@@ -123,7 +128,7 @@ fun Statistika(
             )
 
 
-            ObalStringDoKarty(text = viewModel.getZiskZKryptomien(), (viewModel.jeZaporny(viewModel.ziskZKryptomien)))
+            ObalStringDoKarty(homeUiState.ziskZKryptomien)
 
         }
     }
@@ -131,46 +136,39 @@ fun Statistika(
 
 @Composable
 fun ObalStringDoKarty(
-    text: String,
-    zaporny: Boolean = false
+    hodnota: Double
 ) {
-    if (!zaporny) {
-        Card(
-            colors = CardDefaults.cardColors(
-                containerColor = MaterialTheme.colorScheme.primaryContainer,
-                contentColor = MaterialTheme.colorScheme.onPrimaryContainer
-            )
-        ) {
-            Text(
-                modifier = Modifier.padding(
-                    top = 12.dp,
-                    start = 32.dp,
-                    bottom = 12.dp,
-                    end = 32.dp
-                ),
-                text = text,
-                style = MaterialTheme.typography.headlineLarge
-            )
-        }
-    } else {
-        Card(
-            colors = CardDefaults.cardColors(
-                containerColor = MaterialTheme.colorScheme.errorContainer,
-                contentColor = MaterialTheme.colorScheme.onErrorContainer
-            )
-        ) {
-            Text(
-                modifier = Modifier.padding(
-                    top = 12.dp,
-                    start = 32.dp,
-                    bottom = 12.dp,
-                    end = 32.dp
-                ),
-                text = text,
-                style = MaterialTheme.typography.headlineLarge
-            )
-        }
+    val cardColors = when {
+        hodnota == 0.0 -> CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.secondaryContainer,
+            contentColor = MaterialTheme.colorScheme.onSecondaryContainer
+        )
+        hodnota > 0 -> CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.primaryContainer,
+            contentColor = MaterialTheme.colorScheme.onPrimaryContainer
+        )
+        else -> CardDefaults.cardColors(
+            containerColor = MaterialTheme.colorScheme.errorContainer,
+            contentColor = MaterialTheme.colorScheme.onErrorContainer
+        )
+    }
+
+    Card(
+        colors = cardColors
+    ) {
+        Text(
+            modifier = Modifier.padding(
+                top = 12.dp,
+                start = 32.dp,
+                bottom = 12.dp,
+                end = 32.dp
+            ),
+            text = "${hodnota.formattedPrice()}",
+            style = MaterialTheme.typography.headlineSmall
+        )
     }
 }
 
-
+fun Double.formattedPrice(): String {
+    return NumberFormat.getCurrencyInstance().format(this)
+}
