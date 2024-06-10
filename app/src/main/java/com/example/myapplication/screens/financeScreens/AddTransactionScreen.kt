@@ -5,7 +5,6 @@ import TransactionUiState
 import TranscactionDetails
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -30,18 +29,13 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
-import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelStoreOwner
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.myapplication.R
 import com.example.myapplication.data.TypPrevodu
 import com.example.myapplication.screens.MyViewModelProvider
-import com.example.myapplication.screens.homeScreens.HomeViewModel
 import com.example.myapplication.screens.navigation.AppTopBar
 import kotlinx.coroutines.launch
 import java.util.Currency
@@ -106,7 +100,11 @@ fun Body(
         )
         Button(
             onClick = onSaveClick,
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(
+                    start = 16.dp,
+                    end = 16.dp),
             enabled = transactionUiState.isEntryValid
         ) {
             Text(text = stringResource(R.string.ulozit))

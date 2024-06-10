@@ -33,14 +33,6 @@ class HomeViewModel(val prevodRepository: PrevodRepository) : ViewModel(
 
                 )
             }.collect()
-
-//            prevodRepository.getAllPrevodyByTypeStream(TypPrevodu.PRIJEM).collect { prijmy ->
-//                homeUiState = homeUiState.copy(celkovePrijmy = prijmy.sumOf { it.hodnota })
-//            }
-//
-//            prevodRepository.getAllPrevodyByTypeStream(TypPrevodu.VYDAJ).collect { vydaje ->
-//                homeUiState = homeUiState.copy(celkoveVydaje = vydaje.sumOf { -it.hodnota })
-//            }
         }
     }
 }

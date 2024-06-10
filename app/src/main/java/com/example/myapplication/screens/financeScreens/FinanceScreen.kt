@@ -2,8 +2,10 @@ package com.example.myapplication.screens.financeScreens
 
 import FinanceViewModel
 import TransactionUiState
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentWidth
@@ -25,18 +27,16 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import com.example.myapplication.R
 import com.example.myapplication.data.Prevod
-import com.example.myapplication.data.TypPrevodu
 import com.example.myapplication.screens.MyViewModelProvider
 import com.example.myapplication.screens.navigation.AppTopBar
 import com.example.myapplication.screens.navigation.Screens
+import com.example.myapplication.screens.navigation.TransactionScreens
 import java.text.NumberFormat
 
 
@@ -45,7 +45,7 @@ import java.text.NumberFormat
 fun FinanceScreen(
     modifier: Modifier = Modifier,
     navController: NavHostController,
-    viewModel: FinanceViewModel = viewModel(factory = MyViewModelProvider.Factory)
+    viewModel: FinanceViewModel = viewModel(factory = MyViewModelProvider.Factory),
 ) {
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
 
@@ -71,10 +71,11 @@ fun FinanceScreen(
         }) { innerPadding ->
         FinanceStastistika(
             transactionUiState = viewModel.transactionUiState,
+            navController = navController,
             modifier = modifier
                 .padding(innerPadding)
                 .verticalScroll(rememberScrollState())
-                .fillMaxWidth()
+                .fillMaxWidth(),
         )
     }
 }
@@ -83,6 +84,7 @@ fun FinanceScreen(
 fun FinanceStastistika(
     modifier: Modifier = Modifier,
     transactionUiState: TransactionUiState,
+    navController: NavHostController
 ) {
     Column(
         modifier = modifier.padding(16.dp),
@@ -98,7 +100,11 @@ fun FinanceStastistika(
             .fillMaxWidth()
     )
         if (!transactionUiState.prijmy.isEmpty()) {
-            FinanceItem(stringResource(R.string.prijmy),transactionUiState.celkovePrijmy, transactionUiState.prijmy)
+            FinanceItem(
+                stringResource(R.string.prijmy),
+                transactionUiState.celkovePrijmy,
+                navController,
+                transactionUiState.prijmy)
         } else {
             Text(
                 text = stringResource(R.string.bez_prijmov_button_plus),
@@ -119,7 +125,10 @@ fun FinanceStastistika(
             .fillMaxWidth()
     )
         if (!transactionUiState.vydaje.isEmpty()) {
-            FinanceItem(stringResource(R.string.vydavky),transactionUiState.celkoveVydaje, transactionUiState.vydaje)
+            FinanceItem(stringResource(R.string.vydavky),
+                transactionUiState.celkoveVydaje,
+                navController,
+                transactionUiState.vydaje)
         } else {
             Text(
                 text = stringResource(R.string.bez_vydavkov_button_plus),
@@ -137,6 +146,7 @@ fun FinanceStastistika(
 private fun FinanceItem(
     title: String,
     total: Double,
+    navController: NavHostController,
     transactions: List<Prevod>
 ) {
     Column {
@@ -148,21 +158,31 @@ private fun FinanceItem(
         )
 
         val transacationType = stringResource(R.string.vydavky)
+        val isIncome = title != transacationType
 
-        val cardColors = if (title == transacationType) {
-            CardDefaults.cardColors(
-                containerColor = MaterialTheme.colorScheme.errorContainer,
-                contentColor = MaterialTheme.colorScheme.onErrorContainer
-            )
-        } else {
+        val cardColors = if (isIncome) {
             CardDefaults.cardColors(
                 containerColor = MaterialTheme.colorScheme.primaryContainer,
                 contentColor = MaterialTheme.colorScheme.onPrimaryContainer
             )
+        } else {
+            CardDefaults.cardColors(
+                containerColor = MaterialTheme.colorScheme.errorContainer,
+                contentColor = MaterialTheme.colorScheme.onErrorContainer,
+            )
         }
 
+
+
         Card(
-            colors = cardColors
+            colors = cardColors,
+            modifier = Modifier
+                .padding(top = 12.dp)
+                .clickable {
+                    val isIncome = isIncome// or false, based on your logic
+                    navController.navigate(TransactionScreens.transactionsDetailsRoute(isIncome))
+                }
+
         ) {
             transactions.forEach { prevod ->
                 val formattedPrice = if (title == transacationType) {
@@ -171,18 +191,28 @@ private fun FinanceItem(
                     prevod.hodnota.formattedPrice()
                 }
 
-                Text(
-                    text = "${prevod.nazov}: $formattedPrice",
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.secondary,
-                    modifier = Modifier.fillMaxWidth()
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
                         .padding(
                             top = 6.dp,
                             start = 16.dp,
                             bottom = 6.dp,
                             end = 16.dp
                         ),
-                )
+                    Arrangement.SpaceBetween
+                ) {
+                    Text(
+                        text = prevod.nazov,
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = MaterialTheme.colorScheme.secondary
+                    )
+                    Text(
+                        text = formattedPrice,
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = MaterialTheme.colorScheme.secondary
+                    )
+                }
             }
         }
     }

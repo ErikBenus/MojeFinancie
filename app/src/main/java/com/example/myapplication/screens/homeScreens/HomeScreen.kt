@@ -1,9 +1,8 @@
 package com.example.myapplication.screens.homeScreens
 
 
-import TransactionUiState
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
@@ -18,24 +17,24 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelStoreOwner
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavHostController
 import com.example.myapplication.R
 import com.example.myapplication.screens.MyViewModelProvider
 import com.example.myapplication.screens.financeScreens.formattedPrice
 import com.example.myapplication.screens.navigation.AppTopBar
-import java.text.NumberFormat
+import com.example.myapplication.screens.navigation.Screens
+
 
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun Home(
     modifier: Modifier = Modifier,
-    viewModel: HomeViewModel = viewModel(factory = MyViewModelProvider.Factory)
+    viewModel: HomeViewModel = viewModel(factory = MyViewModelProvider.Factory),
+    navController: NavHostController
 ) {
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
 
@@ -52,7 +51,8 @@ fun Home(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(innerPadding),
-            homeUiState = viewModel.homeUiState
+            homeUiState = viewModel.homeUiState,
+            navController
         )
     }
 }
@@ -61,7 +61,8 @@ fun Home(
 @Composable
 fun Statistika(
     modifier: Modifier = Modifier,
-    homeUiState: HomeUiState
+    homeUiState: HomeUiState,
+    navController: NavHostController
 ) {
 
     LazyColumn(
@@ -77,7 +78,11 @@ fun Statistika(
                 color = MaterialTheme.colorScheme.secondary
             )
             
-            ObalStringDoKarty(homeUiState.celkovePrijmy)
+            ObalStringDoKarty(
+                homeUiState.celkovePrijmy,
+                navController = navController,
+                destination = Screens.FinanceScreen.name
+            )
             
         }
         item {
@@ -87,7 +92,11 @@ fun Statistika(
                 color = MaterialTheme.colorScheme.secondary
             )
 
-            ObalStringDoKarty(homeUiState.celkoveVydaje)
+            ObalStringDoKarty(
+                homeUiState.celkoveVydaje,
+                navController = navController,
+                destination = Screens.FinanceScreen.name
+            )
             
         }
         item {
@@ -97,7 +106,11 @@ fun Statistika(
                 color = MaterialTheme.colorScheme.secondary
             )
 
-            ObalStringDoKarty(homeUiState.hodnotaAkcii)
+            ObalStringDoKarty(
+                homeUiState.hodnotaAkcii,
+                navController = navController,
+                destination = Screens.StocksScreen.name
+            )
 
         }
         item {
@@ -107,7 +120,11 @@ fun Statistika(
                 color = MaterialTheme.colorScheme.secondary
             )
 
-            ObalStringDoKarty(homeUiState.ziskZAkcii)
+            ObalStringDoKarty(
+                homeUiState.ziskZAkcii,
+                navController = navController,
+                destination = Screens.StocksScreen.name
+            )
 
         }
         item {
@@ -117,7 +134,11 @@ fun Statistika(
                 color = MaterialTheme.colorScheme.secondary
             )
 
-            ObalStringDoKarty(homeUiState.hodnotaKryptomien)
+            ObalStringDoKarty(
+                homeUiState.hodnotaKryptomien,
+                navController = navController,
+                destination = Screens.CryptoScreen.name
+            )
 
         }
         item {
@@ -128,15 +149,21 @@ fun Statistika(
             )
 
 
-            ObalStringDoKarty(homeUiState.ziskZKryptomien)
-
+            ObalStringDoKarty(
+                homeUiState.ziskZKryptomien,
+                navController = navController,
+                destination = Screens.CryptoScreen.name
+            )
         }
     }
 }
 
 @Composable
 fun ObalStringDoKarty(
-    hodnota: Double
+    hodnota: Double,
+    modifier: Modifier = Modifier,
+    navController: NavHostController,
+    destination: String,
 ) {
     val cardColors = when {
         hodnota == 0.0 -> CardDefaults.cardColors(
@@ -154,7 +181,10 @@ fun ObalStringDoKarty(
     }
 
     Card(
-        colors = cardColors
+        colors = cardColors,
+        modifier = modifier.clickable {
+        navController.navigate(destination) // Add navigation logic here
+        }
     ) {
         Text(
             modifier = Modifier.padding(
@@ -167,8 +197,4 @@ fun ObalStringDoKarty(
             style = MaterialTheme.typography.headlineSmall
         )
     }
-}
-
-fun Double.formattedPrice(): String {
-    return NumberFormat.getCurrencyInstance().format(this)
 }

@@ -10,6 +10,7 @@ import com.example.myapplication.R
 import com.example.myapplication.data.Prevod
 import com.example.myapplication.data.PrevodRepository
 import com.example.myapplication.data.TypPrevodu
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collect
@@ -19,7 +20,7 @@ import java.text.NumberFormat
 
 
 
-class FinanceViewModel(val prevodRepository: PrevodRepository) : ViewModel() {
+class FinanceViewModel(private val prevodRepository: PrevodRepository) : ViewModel() {
 
     var transactionUiState by mutableStateOf(TransactionUiState())
         private set
@@ -39,13 +40,6 @@ class FinanceViewModel(val prevodRepository: PrevodRepository) : ViewModel() {
         transactionUiState =
             TransactionUiState(transactionDetails = transactionDetails, isEntryValid = validateInput(transactionDetails))
     }
-    // Možno sa zíde - slúži na checkbox
-    fun onTypeSelected(typPrevodu: TypPrevodu) {
-        transactionUiState = transactionUiState.copy(
-            transactionDetails = transactionUiState.transactionDetails.copy(typ = typPrevodu)
-        )
-    }
-
 
 
     init {
@@ -105,6 +99,7 @@ fun Prevod.toTransactionUiState(isEntryValid: Boolean = false): TransactionUiSta
     transactionDetails = this.toTransactionDetails(),        //itemDetails = this.toItemDetails(),
     isEntryValid = isEntryValid
 )
+
 
 /**
  * Extension function to convert [Item] to [ItemDetails]
