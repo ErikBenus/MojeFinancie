@@ -52,6 +52,10 @@ import com.example.myapplication.screens.portfolioScreens.EditInvestmentScreen
 import com.example.myapplication.screens.portfolioScreens.EditInvestmentViewModel
 import com.example.myapplication.screens.portfolioScreens.StocksScreen
 
+/**
+ * Navigačná zložka aplikácie, ktorá obsahuje hornú lištu a navigačný panel.
+ * Vykresľuje rôzne obrazovky aplikácie v závislosti na aktuálnej destinácii.
+ */
 @Composable
 fun AppNavigation() {
     val navController: NavHostController = rememberNavController()
@@ -162,6 +166,9 @@ fun AppNavigation() {
     }
 }
 
+/**
+ * Horná lišta aplikácie s možnosťou navigácie späť a názvom obrazovky.
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AppTopBar(

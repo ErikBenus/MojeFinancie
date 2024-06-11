@@ -20,6 +20,9 @@ import com.example.myapplication.screens.MyViewModelProvider
 import com.example.myapplication.screens.navigation.AppTopBar
 import kotlinx.coroutines.launch
 
+/**
+ * Obrazovka na úpravu transakcií.
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TransactionsEditScreen(
@@ -41,6 +44,9 @@ fun TransactionsEditScreen(
             )
         }
     ) { innerPadding ->
+        /**
+         * Body je funkcia ktorá je totožná z obrazovky ddTransactionScreen
+         */
         Body(
             transactionUiState = viewModel.transactionUiState,
             onTransactionValueChange = viewModel::updateUiState,

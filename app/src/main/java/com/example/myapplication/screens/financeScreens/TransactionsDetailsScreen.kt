@@ -44,7 +44,9 @@ import com.example.myapplication.screens.MyViewModelProvider
 import com.example.myapplication.screens.navigation.AppTopBar
 import com.example.myapplication.screens.navigation.TransactionScreens
 
-
+/**
+ * Obrazovka pre zobrazenie detailov transakcií.
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TransactionsDetailsScreen(
@@ -91,7 +93,9 @@ fun TransactionsDetailsScreen(
     }
 }
 
-
+/**
+ * Telo obrazovky pre detaily transakcií.
+ */
 @Composable
 private fun TransactionDetailsBody(
     transactionUiState: TransactionUiState,
@@ -119,6 +123,9 @@ private fun TransactionDetailsBody(
     }
 }
 
+/**
+ * Komponent pre zobrazenie detailov transakcie.
+ */
 @Composable
 fun TransactionDetails(
     transactionUiState: TransactionUiState,
@@ -226,7 +233,9 @@ fun TransactionDetails(
     }
 }
 
-
+/**
+ * Jeden riadok, ktorý as bude nachdázať v karte
+ */
 @Composable
 private fun TransactionDetailsRow(
     @StringRes labelResID: Int, transactionDetail: String, modifier: Modifier = Modifier
@@ -238,6 +247,9 @@ private fun TransactionDetailsRow(
     }
 }
 
+/**
+ * AlterDialog, ktorý as otvorí potom, čo klikneme na tlčidlo odstrániť
+ */
 @Composable
 private fun DeleteConfirmationDialog(
     onDeleteConfirm: () -> Unit,

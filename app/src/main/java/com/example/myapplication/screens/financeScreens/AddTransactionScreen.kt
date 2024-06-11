@@ -42,6 +42,9 @@ import java.util.Currency
 import java.util.Locale
 import androidx.compose.material3.Text as Text
 
+/**
+ * Obrazovka na pridanie transakcie
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AddTransactionScreen(
@@ -82,6 +85,9 @@ fun AddTransactionScreen(
     }
 }
 
+/**
+ * Telo pre pridanie a potvrdenie tlačidlom
+ */
 @Composable
 fun Body(
     modifier: Modifier = Modifier,
@@ -112,7 +118,9 @@ fun Body(
     }
 }
 
-
+/**
+ * Textove polia a checkbox na vyplnenie transakcie
+ */
 @Composable
 fun AddTransaction(
     modifier: Modifier = Modifier,

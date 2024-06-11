@@ -12,6 +12,9 @@ import com.example.myapplication.data.TypPrevodu
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
 
+/**
+ *  ViewModel trieda pre domovskú obrazovku. Udržiava aktuálny stav štatistík domovskej obrazovky
+ */
 class HomeViewModel(
     val prevodRepository: PrevodRepository,
     val investmentRepository: InvestmentRepository
@@ -21,7 +24,9 @@ class HomeViewModel(
     var homeUiState by mutableStateOf(HomeUiState())
         private set
 
-
+    /**
+     * Spustenie asynchrónnej operácie na načítanie údajov
+      */
     init {
         viewModelScope.launch {
             val combinedFlow = combine(
@@ -54,6 +59,9 @@ class HomeViewModel(
     }
 }
 
+/**
+ * Stavová trieda pre domovskú obrazovku. Uchováva aktuálne údaje o štatistikách.
+ */
 data class HomeUiState(
     val celkovePrijmy: Double = 0.0,
     val celkoveVydaje: Double = 0.0,
@@ -63,6 +71,9 @@ data class HomeUiState(
     val ziskZKryptomien: Double = 0.0
 )
 
+/**
+ * Trieda pre kombinované údaje o štatistikách.
+ */
 data class CombinedData(
     val celkovePrijmy: Double,
     val celkoveVydaje: Double,

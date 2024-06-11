@@ -28,7 +28,9 @@ import com.example.myapplication.screens.navigation.AppTopBar
 import com.example.myapplication.screens.navigation.Screens
 
 
-
+/**
+ * Domovská obrazovka aplikácie. Zobrazuje štatistiky a poskytuje navigáciu k rôznym častiam aplikácie.
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun Home(
@@ -47,7 +49,7 @@ fun Home(
                 scrollBehavior = scrollBehavior
             )
         }) { innerPadding ->
-        Statistika(
+        Statistic(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(innerPadding),
@@ -59,12 +61,15 @@ fun Home(
 
 
 @Composable
-fun Statistika(
+fun Statistic(
     modifier: Modifier = Modifier,
     homeUiState: HomeUiState,
     navController: NavHostController
 ) {
 
+    /**
+     * Pre každú položku vlastná karta, využitá je funckia CoverToCard
+     */
     LazyColumn(
         modifier = modifier.padding(top = 6.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp),
@@ -78,7 +83,7 @@ fun Statistika(
                 color = MaterialTheme.colorScheme.secondary
             )
             
-            ObalStringDoKarty(
+            CoverToCard(
                 homeUiState.celkovePrijmy,
                 navController = navController,
                 destination = Screens.FinanceScreen.name
@@ -92,7 +97,7 @@ fun Statistika(
                 color = MaterialTheme.colorScheme.secondary
             )
 
-            ObalStringDoKarty(
+            CoverToCard(
                 homeUiState.celkoveVydaje,
                 navController = navController,
                 destination = Screens.FinanceScreen.name
@@ -106,7 +111,7 @@ fun Statistika(
                 color = MaterialTheme.colorScheme.secondary
             )
 
-            ObalStringDoKarty(
+            CoverToCard(
                 homeUiState.hodnotaAkcii,
                 navController = navController,
                 destination = Screens.StocksScreen.name
@@ -120,7 +125,7 @@ fun Statistika(
                 color = MaterialTheme.colorScheme.secondary
             )
 
-            ObalStringDoKarty(
+            CoverToCard(
                 homeUiState.ziskZAkcii,
                 navController = navController,
                 destination = Screens.StocksScreen.name
@@ -134,7 +139,7 @@ fun Statistika(
                 color = MaterialTheme.colorScheme.secondary
             )
 
-            ObalStringDoKarty(
+            CoverToCard(
                 homeUiState.hodnotaKryptomien,
                 navController = navController,
                 destination = Screens.CryptoScreen.name
@@ -149,7 +154,7 @@ fun Statistika(
             )
 
 
-            ObalStringDoKarty(
+            CoverToCard(
                 homeUiState.ziskZKryptomien,
                 navController = navController,
                 destination = Screens.CryptoScreen.name
@@ -159,18 +164,21 @@ fun Statistika(
 }
 
 @Composable
-fun ObalStringDoKarty(
-    hodnota: Double,
+fun CoverToCard(
+    amount: Double,
     modifier: Modifier = Modifier,
     navController: NavHostController,
     destination: String,
 ) {
+    /**
+     * Výber farieb pre kartu na základe hodnoty
+     */
     val cardColors = when {
-        hodnota == 0.0 -> CardDefaults.cardColors(
+        amount == 0.0 -> CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.secondaryContainer,
             contentColor = MaterialTheme.colorScheme.onSecondaryContainer
         )
-        hodnota > 0 -> CardDefaults.cardColors(
+        amount > 0 -> CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.primaryContainer,
             contentColor = MaterialTheme.colorScheme.onPrimaryContainer
         )
@@ -180,6 +188,9 @@ fun ObalStringDoKarty(
         )
     }
 
+    /**
+     * Clickable, navigácia posiela na obrazovku, ktorú priajal v argumente
+     */
     Card(
         colors = cardColors,
         modifier = modifier.clickable {
@@ -193,7 +204,7 @@ fun ObalStringDoKarty(
                 bottom = 12.dp,
                 end = 32.dp
             ),
-            text = hodnota.formattedPrice(),
+            text = amount.formattedPrice(),
             style = MaterialTheme.typography.headlineSmall
         )
     }

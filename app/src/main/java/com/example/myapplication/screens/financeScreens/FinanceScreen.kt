@@ -39,7 +39,9 @@ import com.example.myapplication.screens.navigation.Screens
 import com.example.myapplication.screens.navigation.TransactionScreens
 import java.text.NumberFormat
 
-
+/**
+ *  Obrazovka pre zobrazenie finančných štatistík a možnosť pridania nových transakcií - tlačidlo.
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun FinanceScreen(
@@ -69,7 +71,7 @@ fun FinanceScreen(
                 )
             }
         }) { innerPadding ->
-        FinanceStastistika(
+        FinanceStatistic(
             transactionUiState = viewModel.transactionUiState,
             navController = navController,
             modifier = modifier
@@ -80,8 +82,11 @@ fun FinanceScreen(
     }
 }
 
+/**
+ * Komponent pre zobrazenie finančných štatistík.
+ */
 @Composable
-fun FinanceStastistika(
+fun FinanceStatistic(
     modifier: Modifier = Modifier,
     transactionUiState: TransactionUiState,
     navController: NavHostController
@@ -145,6 +150,9 @@ fun FinanceStastistika(
     }
 }
 
+/**
+ * Komponent na zorazenie jednej položky
+ */
 @Composable
 private fun FinanceItem(
     title: String,
@@ -220,6 +228,9 @@ private fun FinanceItem(
 }
 
 
+/**
+ * Formátovanie sumy z Double na String a vo formáte meny aká je v systéme
+ */
 fun Double.formattedPrice(): String {
     return NumberFormat.getCurrencyInstance().format(this)
 }
