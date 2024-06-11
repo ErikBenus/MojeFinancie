@@ -1,6 +1,5 @@
 package com.example.myapplication.screens.navigation
 
-import TransactionsEditViewModel
 import androidx.compose.foundation.layout.Column
 import androidx.compose.material3.ExperimentalMaterial3Api
 
@@ -22,12 +21,10 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.TopAppBarScrollBehavior
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavDestination
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
@@ -39,7 +36,6 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.navArgument
 import com.example.myapplication.R
-import com.example.myapplication.screens.MyViewModelProvider
 import com.example.myapplication.screens.financeScreens.AddTransactionScreen
 import com.example.myapplication.screens.financeScreens.FinanceScreen
 import com.example.myapplication.screens.financeScreens.TransactionsDetailsScreen
@@ -49,7 +45,6 @@ import com.example.myapplication.screens.portfolioScreens.AddCryptoScreen
 import com.example.myapplication.screens.portfolioScreens.AddStockScreen
 import com.example.myapplication.screens.portfolioScreens.CryptoScreen
 import com.example.myapplication.screens.portfolioScreens.EditInvestmentScreen
-import com.example.myapplication.screens.portfolioScreens.EditInvestmentViewModel
 import com.example.myapplication.screens.portfolioScreens.StocksScreen
 
 /**
@@ -131,15 +126,10 @@ fun AppNavigation() {
             composable(
                 route = TransactionScreens.TransactionsEditScreenRoute,
                 arguments = listOf(navArgument("prevodId") { type = NavType.IntType })
-            ) { backStackEntry ->
-                val prevodId = backStackEntry.arguments?.getInt("prevodId") ?: return@composable
-                val viewModel: TransactionsEditViewModel = viewModel(factory = MyViewModelProvider.Factory)
-                val prevodFlow = viewModel.getPrevodById(prevodId).collectAsState(initial = null)
-                prevodFlow.value?.let { prevod ->
-                    TransactionsEditScreen(
-                        navigateBack = { navController.navigateUp() },
-                    )
-                }
+            ) {
+                TransactionsEditScreen(
+                    navigateBack = { navController.navigateUp() },
+                )
             }
             composable(route = Screens.AddStockScreen.name) {
                 AddStockScreen(navigateBack = { navController.navigateUp() }) //
@@ -147,17 +137,11 @@ fun AppNavigation() {
             composable(
                 route = InvestmentScreens.EditInvestmentScreenRoute,
                 arguments = listOf(navArgument("investmentId") { type = NavType.IntType })
-            ) { backStackEntry ->
-                val investmentId = backStackEntry.arguments?.getInt("investmentId") ?: return@composable
-                val viewModel: EditInvestmentViewModel = viewModel(factory = MyViewModelProvider.Factory)
-                val investmentFlow = viewModel.getInvestmentById(investmentId).collectAsState(initial = null)
-                investmentFlow.value?.let { investment ->
-                    EditInvestmentScreen(
-                        navigateBack = { navController.navigateUp() }
-                    )
-                }
+            ) {
+                EditInvestmentScreen(
+                    navigateBack = { navController.navigateUp() }
+                )
             }
-
             composable(route = Screens.AddCryptoScreen.name) {
                 AddCryptoScreen(navigateBack = { navController.navigateUp() }) //
             }
