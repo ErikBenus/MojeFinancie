@@ -48,8 +48,12 @@ import com.example.myapplication.screens.financeScreens.FinanceScreen
 import com.example.myapplication.screens.financeScreens.TransactionsDetailsScreen
 import com.example.myapplication.screens.financeScreens.TransactionsEditScreen
 import com.example.myapplication.screens.homeScreens.Home
-import com.example.myapplication.screens.portfolioScreens.Crypto
-import com.example.myapplication.screens.portfolioScreens.Stock
+import com.example.myapplication.screens.portfolioScreens.AddCryptoScreen
+import com.example.myapplication.screens.portfolioScreens.AddStockScreen
+import com.example.myapplication.screens.portfolioScreens.CryptoScreen
+import com.example.myapplication.screens.portfolioScreens.EditInvestmentScreen
+import com.example.myapplication.screens.portfolioScreens.EditInvestmentViewModel
+import com.example.myapplication.screens.portfolioScreens.StocksScreen
 
 @Composable
 fun AppNavigation() {
@@ -104,10 +108,10 @@ fun AppNavigation() {
                 FinanceScreen(navController = navController)
             }
             composable(route = Screens.StocksScreen.name) {
-                Stock()
+                StocksScreen(navController = navController)
             }
             composable(route = Screens.CryptoScreen.name) {
-                Crypto()
+                CryptoScreen(navController = navController)
             }
             composable(route = Screens.AddTransactionScreen.name) {
                 AddTransactionScreen(navigateBack = { navController.navigateUp() }) //
@@ -136,6 +140,26 @@ fun AppNavigation() {
                         navigateBack = { navController.navigateUp() },
                     )
                 }
+            }
+            composable(route = Screens.AddStockScreen.name) {
+                AddStockScreen(navigateBack = { navController.navigateUp() }) //
+            }
+            composable(
+                route = InvestmentScreens.EditInvestmentScreenRoute,
+                arguments = listOf(navArgument("investmentId") { type = NavType.IntType })
+            ) { backStackEntry ->
+                val investmentId = backStackEntry.arguments?.getInt("investmentId") ?: return@composable
+                val viewModel: EditInvestmentViewModel = viewModel(factory = MyViewModelProvider.Factory)
+                val investmentFlow = viewModel.getInvestmentById(investmentId).collectAsState(initial = null)
+                investmentFlow.value?.let { investment ->
+                    EditInvestmentScreen(
+                        navigateBack = { navController.navigateUp() }
+                    )
+                }
+            }
+
+            composable(route = Screens.AddCryptoScreen.name) {
+                AddCryptoScreen(navigateBack = { navController.navigateUp() }) //
             }
 
         }

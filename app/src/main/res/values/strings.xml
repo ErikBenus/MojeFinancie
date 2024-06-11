@@ -22,13 +22,25 @@
     <string name="bez_vydavkov_button_plus">Super, nemáš žiadne výdavky. Pridať ich môžeš kliknutím na tlačidlo +</string>
     <string name="bez_prijmov_button_plus">Mrzí nás to, ale nemáš žiadne príjmy. Pridať ich môžeš kliknutím na tlačidlo +</string>
     <string name="EURO">" €"</string>
-    <string name="nazov">Názov:</string>
+    <string name="nazov">Názov</string>
     <string name="suma">Suma:</string>
     <string name="delete">Delete</string>
     <string name="upozornenie">Upozornenie</string>
     <string name="otazky_vymazanie">Naozaj chceš vymazať?</string>
     <string name="nie">Nie</string>
-    <string name="no">Áno</string>
+    <string name="ano">Áno</string>
     <string name="edit">Úprava</string>
     <string name="upravy">Úpravy</string>
+    <string name="akciove_portfolio">Akciové Portfólio</string>
+    <string name="portfolio_kryptomien">Portfólio Kryptomien</string>
+    <string name="aktualna_cena">Investícia</string>
+    <string name="ticker">Ticker</string>
+    <string name="zisk">Zisk</string>
+    <string name="investovane">Investované</string>
+    <string name="aktualna_hodnota_investicie">Aktuálna hodnota investície</string>
+    <string name="hodnota_pri_zakupeni">Investované</string>
+    <string name="prazdne_portofolio_upozornenie">Zatiaľ si nepridal žiadne akcie do svojho portfólia. Pridať ich môžeš kliknutím na tlačidlo +</string>
+    <string name="prazdne_kryptomeny_upozornenie">Zatiaľ si nepridal žiadne kryptomeny do svojho portfólia. Pridať ich môžeš kliknutím na tlačidlo +</string>
+    <string name="pridaj_akciu">Pridaj Akciu</string>
+    <string name="pridaj_kryptomenu">Pridaj kryptomenu</string>
 </resources>

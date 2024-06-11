@@ -56,6 +56,8 @@ fun TransactionsDetailsScreen(
 ) {
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
 
+    var deleteConfirmationRequired by rememberSaveable { mutableStateOf(mapOf<Int, Boolean>()) }
+
     val onDelete: (Prevod) -> Unit = { prevod ->
         viewModel.deleteTransaction(prevod)
     }
@@ -78,7 +80,14 @@ fun TransactionsDetailsScreen(
                 .fillMaxWidth(),
             isIncome = isIncome,
             onDelete = onDelete,
-            navController = navController
+            navController = navController,
+            deleteConfirmationRequired = deleteConfirmationRequired,
+            onDeleteConfirmationChange = { prevodId, confirmation ->
+                // Update the value of deleteConfirmationRequired for the given investment
+                deleteConfirmationRequired = deleteConfirmationRequired.toMutableMap().apply {
+                    this[prevodId] = confirmation
+                }
+            }
         )
     }
 }
@@ -90,7 +99,9 @@ private fun TransactionDetailsBody(
     modifier: Modifier = Modifier,
     isIncome: Boolean,
     onDelete: (Prevod) -> Unit,
-    navController: NavHostController
+    navController: NavHostController,
+    deleteConfirmationRequired: Map<Int, Boolean>,
+    onDeleteConfirmationChange: (Int, Boolean) -> Unit
 ) {
     Column(
         modifier = modifier.padding(16.dp),
@@ -102,7 +113,9 @@ private fun TransactionDetailsBody(
             modifier = Modifier.fillMaxWidth(),
             onDelete = onDelete,
             isIncome = isIncome,
-            navController =  navController
+            navController =  navController,
+            deleteConfirmationRequired = deleteConfirmationRequired,
+            onDeleteConfirmationChange = onDeleteConfirmationChange
         )
     }
 }
@@ -113,9 +126,10 @@ fun TransactionDetails(
     modifier: Modifier = Modifier,
     isIncome: Boolean,
     onDelete: (Prevod) -> Unit,
-    navController: NavHostController
+    navController: NavHostController,
+    deleteConfirmationRequired: Map<Int, Boolean>,
+    onDeleteConfirmationChange: (Int, Boolean) -> Unit
 ) {
-    var deleteConfirmationRequired by rememberSaveable { mutableStateOf(false) }
 
     val transactions = if (isIncome) {
         transactionUiState.prijmy
@@ -177,7 +191,7 @@ fun TransactionDetails(
             ) {
                 // Tlačítko pro odstranění transakce
                 Button(
-                    onClick = { deleteConfirmationRequired = true },
+                    onClick = { onDeleteConfirmationChange(prevod.id, true) },
                     shape = MaterialTheme.shapes.small,
                     enabled = true,
                     colors = buttonColors
@@ -202,12 +216,12 @@ fun TransactionDetails(
                 }
             }
 
-            if (deleteConfirmationRequired) {
+            if ((deleteConfirmationRequired[prevod.id] == true)) {
                 DeleteConfirmationDialog(
                     onDeleteConfirm = {
-                        deleteConfirmationRequired = false
+                        onDeleteConfirmationChange(prevod.id, false)
                     },
-                    onDeleteCancel = { deleteConfirmationRequired = false },
+                    onDeleteCancel = { onDeleteConfirmationChange(prevod.id, false)},
                     onDelete = onDelete,
                     prevod = prevod,
                     modifier = Modifier.padding(16.dp)
@@ -253,7 +267,7 @@ private fun DeleteConfirmationDialog(
                 onDeleteConfirm()
                 onDelete(prevod)
             }) {
-                Text(stringResource(R.string.no))
+                Text(stringResource(R.string.ano))
             }
         }
     )

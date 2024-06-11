@@ -2,7 +2,6 @@ package com.example.myapplication.screens
 
 import FinanceViewModel
 import TransactionsEditViewModel
-import android.app.Application
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.createSavedStateHandle
 import androidx.lifecycle.viewmodel.CreationExtras
@@ -11,6 +10,9 @@ import androidx.lifecycle.viewmodel.viewModelFactory
 import com.example.myapplication.MyFinanceApp
 import com.example.myapplication.screens.financeScreens.TransactionDetailsViewModel
 import com.example.myapplication.screens.homeScreens.HomeViewModel
+import com.example.myapplication.screens.portfolioScreens.CryptoViewModel
+import com.example.myapplication.screens.portfolioScreens.EditInvestmentViewModel
+import com.example.myapplication.screens.portfolioScreens.StocksViewModel
 
 object MyViewModelProvider {
     val Factory = viewModelFactory {
@@ -21,7 +23,9 @@ object MyViewModelProvider {
         }
 
         initializer {
-            HomeViewModel(myFinanceApp().container.prevodRepository)
+            HomeViewModel(
+                myFinanceApp().container.prevodRepository,
+                myFinanceApp().container.investmentRepository)
         }
 
         initializer {
@@ -34,6 +38,20 @@ object MyViewModelProvider {
                 myFinanceApp().container.prevodRepository,
                 this.createSavedStateHandle()
             )
+        }
+
+        initializer {
+            StocksViewModel(myFinanceApp().container.investmentRepository)
+        }
+
+        initializer {
+            EditInvestmentViewModel(
+                myFinanceApp().container.investmentRepository,
+                this.createSavedStateHandle())
+        }
+
+        initializer {
+            CryptoViewModel(myFinanceApp().container.investmentRepository)
         }
     }
 }

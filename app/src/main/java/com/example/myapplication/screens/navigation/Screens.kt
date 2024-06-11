@@ -5,7 +5,9 @@ enum class Screens {
     FinanceScreen,
     StocksScreen,
     CryptoScreen,
-    AddTransactionScreen
+    AddTransactionScreen,
+    AddStockScreen,
+    AddCryptoScreen,
 }
 
 object TransactionScreens {
@@ -15,4 +17,9 @@ object TransactionScreens {
     const val TransactionsEditScreenRoute = "transactions_edit_screen/{prevodId}"
     fun transactionsEditRoute(prevodId: Int) = "transactions_edit_screen/$prevodId"
 
+}
+
+object InvestmentScreens {
+    const val EditInvestmentScreenRoute = "edit_investment_screen/{investmentId}"
+    fun editInvestmentRoute(investmentId: Int) = "edit_investment_screen/$investmentId"
 }
