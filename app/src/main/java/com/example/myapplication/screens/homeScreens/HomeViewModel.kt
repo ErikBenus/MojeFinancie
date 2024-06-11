@@ -7,14 +7,10 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.myapplication.data.InvestmentRepository
 import com.example.myapplication.data.InvestmentType
-import com.example.myapplication.data.Prevod
 import com.example.myapplication.data.PrevodRepository
 import com.example.myapplication.data.TypPrevodu
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.toList
-import java.text.NumberFormat
 
 class HomeViewModel(
     val prevodRepository: PrevodRepository,
@@ -44,7 +40,6 @@ class HomeViewModel(
                 )
             }
 
-            // Collect combined data and update homeUiState
             combinedFlow.collect { combinedData ->
                 homeUiState = homeUiState.copy(
                     celkovePrijmy = combinedData.celkovePrijmy,

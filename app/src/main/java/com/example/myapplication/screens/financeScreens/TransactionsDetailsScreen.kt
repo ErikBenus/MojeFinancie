@@ -83,7 +83,6 @@ fun TransactionsDetailsScreen(
             navController = navController,
             deleteConfirmationRequired = deleteConfirmationRequired,
             onDeleteConfirmationChange = { prevodId, confirmation ->
-                // Update the value of deleteConfirmationRequired for the given investment
                 deleteConfirmationRequired = deleteConfirmationRequired.toMutableMap().apply {
                     this[prevodId] = confirmation
                 }
@@ -137,7 +136,6 @@ fun TransactionDetails(
         transactionUiState.vydaje
     }
 
-    // Nastavení barev karty, tlačítek a outlined tlačítek na základě isIncome
     val cardColors = CardDefaults.cardColors(
         containerColor = if (isIncome) MaterialTheme.colorScheme.primaryContainer else MaterialTheme.colorScheme.errorContainer,
         contentColor = if (isIncome) MaterialTheme.colorScheme.onPrimaryContainer else MaterialTheme.colorScheme.onErrorContainer
@@ -166,7 +164,6 @@ fun TransactionDetails(
                 12.dp
             )
         ) {
-            // Zobrazit název
             TransactionDetailsRow(
                 labelResID = R.string.nazov,
                 transactionDetail = prevod.nazov,
@@ -175,7 +172,6 @@ fun TransactionDetails(
                 )
             )
 
-            // Zobrazit hodnotu
             TransactionDetailsRow(
                 labelResID = R.string.suma,
                 transactionDetail = prevod.hodnota.formattedPrice(),
@@ -189,7 +185,6 @@ fun TransactionDetails(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceEvenly
             ) {
-                // Tlačítko pro odstranění transakce
                 Button(
                     onClick = { onDeleteConfirmationChange(prevod.id, true) },
                     shape = MaterialTheme.shapes.small,
@@ -202,7 +197,6 @@ fun TransactionDetails(
                     )
                 }
 
-                // Tlačítko pro úpravu transakce
                 OutlinedButton(
                     onClick = { navController.navigate(TransactionScreens.transactionsEditRoute(prevod.id))},
                     shape = MaterialTheme.shapes.small,

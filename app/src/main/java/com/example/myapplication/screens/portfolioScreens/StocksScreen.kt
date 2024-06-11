@@ -89,7 +89,7 @@ fun StocksScreen(
             ) {
                 Icon(
                     imageVector = Icons.Default.Add,
-                    contentDescription = stringResource(R.string.add_item)
+                    contentDescription = stringResource(R.string.pridaj_akciu)
                 )
             }
         }) { innerPadding ->
@@ -108,7 +108,6 @@ fun StocksScreen(
                 onDelete = onDelete,
                 deleteConfirmationRequired = deleteConfirmationRequired,
                 onDeleteConfirmationChange = { investmentId, confirmation ->
-                    // Update the value of deleteConfirmationRequired for the given investment
                     deleteConfirmationRequired = deleteConfirmationRequired.toMutableMap().apply {
                         this[investmentId] = confirmation
                     }
@@ -134,24 +133,23 @@ fun InvestmentBody(
     if (investments.isEmpty()) {
         Box(
             modifier = Modifier
-                .fillMaxSize() // Fills the entire screen
-                .background(MaterialTheme.colorScheme.background) // Optional background color
+                .fillMaxSize()
+                .background(MaterialTheme.colorScheme.background)
         ) {
             Text(
                 text = stringResource(R.string.prazdne_portofolio_upozornenie),
                 textAlign = TextAlign.Center,
-                style = MaterialTheme.typography.titleLarge, // Use bodyLarge for larger font
+                style = MaterialTheme.typography.titleLarge,
                 color = MaterialTheme.colorScheme.secondary,
                 modifier = Modifier
-                    .fillMaxSize() // Ensures text fills available space
-                    .padding(horizontal = 16.dp, vertical = 16.dp) // Add padding around text
-                    .wrapContentSize(Alignment.Center) // Centers horizontally and vertically
+                    .fillMaxSize()
+                    .padding(horizontal = 16.dp, vertical = 16.dp)
+                    .wrapContentSize(Alignment.Center)
             )
         }
     }
 
     investments.forEach { investment ->
-
 
         val income = investment.currentAmount - investment.startingAmount
 
@@ -279,7 +277,7 @@ private fun DeleteConfirmationDialog(
     investment: Investment
 ) {
     AlertDialog(
-        onDismissRequest = { /* Do nothing */ },
+        onDismissRequest = { },
         title = { Text(stringResource(R.string.upozornenie)) },
         text = { Text(stringResource(R.string.otazky_vymazanie)) },
         modifier = modifier,

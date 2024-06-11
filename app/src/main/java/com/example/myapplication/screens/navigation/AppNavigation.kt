@@ -1,8 +1,6 @@
 package com.example.myapplication.screens.navigation
 
-import FinanceViewModel
 import TransactionsEditViewModel
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.material3.ExperimentalMaterial3Api
 
@@ -41,7 +39,6 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.navArgument
 import com.example.myapplication.R
-import com.example.myapplication.data.Prevod
 import com.example.myapplication.screens.MyViewModelProvider
 import com.example.myapplication.screens.financeScreens.AddTransactionScreen
 import com.example.myapplication.screens.financeScreens.FinanceScreen
@@ -66,7 +63,7 @@ fun AppNavigation() {
                 val navBackStackEntry by navController.currentBackStackEntryAsState()
                 val currentDestination: NavDestination? = navBackStackEntry?.destination
 
-                listopfNavItems.forEach { navItem ->
+                listofNavItems.forEach { navItem ->
                     NavigationBarItem(
                         selected = currentDestination?.hierarchy?.any { it.route == navItem.route } == true,
                         onClick = {
@@ -136,7 +133,6 @@ fun AppNavigation() {
                 val prevodFlow = viewModel.getPrevodById(prevodId).collectAsState(initial = null)
                 prevodFlow.value?.let { prevod ->
                     TransactionsEditScreen(
-                        prevodId = prevodId,
                         navigateBack = { navController.navigateUp() },
                     )
                 }

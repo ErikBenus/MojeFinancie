@@ -183,7 +183,7 @@ fun ObalStringDoKarty(
     Card(
         colors = cardColors,
         modifier = modifier.clickable {
-        navController.navigate(destination) // Add navigation logic here
+        navController.navigate(destination)
         }
     ) {
         Text(
@@ -193,7 +193,7 @@ fun ObalStringDoKarty(
                 bottom = 12.dp,
                 end = 32.dp
             ),
-            text = "${hodnota.formattedPrice()}",
+            text = hodnota.formattedPrice(),
             style = MaterialTheme.typography.headlineSmall
         )
     }

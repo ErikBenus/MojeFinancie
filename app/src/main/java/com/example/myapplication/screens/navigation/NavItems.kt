@@ -13,7 +13,7 @@ data class NavItem(
     val route: String
 )
 
-val listopfNavItems = listOf(
+val listofNavItems = listOf(
     NavItem(
         label = "Domov",
         icon = Icons.Default.Home,

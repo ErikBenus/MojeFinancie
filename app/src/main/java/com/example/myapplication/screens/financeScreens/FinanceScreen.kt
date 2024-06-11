@@ -60,12 +60,12 @@ fun FinanceScreen(
         },
         floatingActionButton = {
             FloatingActionButton(
-                onClick = {navController.navigate(Screens.AddTransactionScreen.name) },
+                onClick = { navController.navigate(Screens.AddTransactionScreen.name) },
                 modifier = Modifier.padding(20.dp)
             ) {
                 Icon(
                     imageVector = Icons.Default.Add,
-                    contentDescription = stringResource(R.string.add_item)
+                    contentDescription = stringResource(R.string.pridaj_transakciu)
                 )
             }
         }) { innerPadding ->
@@ -89,22 +89,23 @@ fun FinanceStastistika(
     Column(
         modifier = modifier.padding(16.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp)
-) {
+    ) {
 
-    Text(
-        text = stringResource(R.string.prijmy),
-        style = MaterialTheme.typography.headlineMedium,
-        fontWeight = FontWeight.Bold,
-        color = MaterialTheme.colorScheme.primary,
-        modifier = Modifier
-            .fillMaxWidth()
-    )
+        Text(
+            text = stringResource(R.string.prijmy),
+            style = MaterialTheme.typography.headlineMedium,
+            fontWeight = FontWeight.Bold,
+            color = MaterialTheme.colorScheme.primary,
+            modifier = Modifier
+                .fillMaxWidth()
+        )
         if (!transactionUiState.prijmy.isEmpty()) {
             FinanceItem(
                 stringResource(R.string.prijmy),
                 transactionUiState.celkovePrijmy,
                 navController,
-                transactionUiState.prijmy)
+                transactionUiState.prijmy
+            )
         } else {
             Text(
                 text = stringResource(R.string.bez_prijmov_button_plus),
@@ -116,19 +117,21 @@ fun FinanceStastistika(
             )
         }
 
-    Text(
-        text = stringResource(R.string.vydavky),
-        style = MaterialTheme.typography.headlineMedium,
-        fontWeight = FontWeight.Bold,
-        color = MaterialTheme.colorScheme.error,
-        modifier = Modifier
-            .fillMaxWidth()
-    )
+        Text(
+            text = stringResource(R.string.vydavky),
+            style = MaterialTheme.typography.headlineMedium,
+            fontWeight = FontWeight.Bold,
+            color = MaterialTheme.colorScheme.error,
+            modifier = Modifier
+                .fillMaxWidth()
+        )
         if (!transactionUiState.vydaje.isEmpty()) {
-            FinanceItem(stringResource(R.string.vydavky),
+            FinanceItem(
+                stringResource(R.string.vydavky),
                 transactionUiState.celkoveVydaje,
                 navController,
-                transactionUiState.vydaje)
+                transactionUiState.vydaje
+            )
         } else {
             Text(
                 text = stringResource(R.string.bez_vydavkov_button_plus),
@@ -139,7 +142,7 @@ fun FinanceStastistika(
                     .wrapContentWidth(Alignment.CenterHorizontally)
             )
         }
-}
+    }
 }
 
 @Composable
@@ -173,13 +176,11 @@ private fun FinanceItem(
         }
 
 
-
         Card(
             colors = cardColors,
             modifier = Modifier
                 .padding(top = 12.dp)
                 .clickable {
-                    val isIncome = isIncome// or false, based on your logic
                     navController.navigate(TransactionScreens.transactionsDetailsRoute(isIncome))
                 }
 

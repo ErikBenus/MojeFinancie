@@ -1,23 +1,14 @@
-import android.content.Context
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
-import com.example.myapplication.R
 import com.example.myapplication.data.Prevod
 import com.example.myapplication.data.PrevodRepository
 import com.example.myapplication.data.TypPrevodu
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
-import java.text.NumberFormat
-
 
 
 class FinanceViewModel(private val prevodRepository: PrevodRepository) : ViewModel() {
@@ -59,19 +50,16 @@ class FinanceViewModel(private val prevodRepository: PrevodRepository) : ViewMod
 
         }
     }
-
-
-
 }
 
-data class TranscactionDetails( //ItemDetails
+data class TranscactionDetails(
     val id: Int = 0,
     val nazov: String = "",
     val hodnota: String = "",
     val typ: TypPrevodu? = null
 )
 
-data class TransactionUiState( //ItemUiState
+data class TransactionUiState(
     val transactionDetails: TranscactionDetails = TranscactionDetails(),
     val isEntryValid: Boolean = false,
     val prijmy: List<Prevod> = emptyList(),
@@ -80,11 +68,7 @@ data class TransactionUiState( //ItemUiState
     val celkoveVydaje: Double = 0.0
 )
 
-/**
- * Extension function to convert [ItemDetails] to [Item]. If the value of [ItemDetails.price] is
- * not a valid [Double], then the price will be set to 0.0. Similarly if the value of
- * [ItemDetails.quantity] is not a valid [Int], then the quantity will be set to 0
- */
+
 fun TranscactionDetails.toTransaction(): Prevod = Prevod(
     id = id,
     nazov = nazov,
@@ -92,18 +76,13 @@ fun TranscactionDetails.toTransaction(): Prevod = Prevod(
     typ = typ ?: TypPrevodu.PRIJEM
 )
 
-/**
- * Extension function to convert [Item] to [ItemUiState]
- */
-fun Prevod.toTransactionUiState(isEntryValid: Boolean = false): TransactionUiState = TransactionUiState( // Prevod.toItemUiState
-    transactionDetails = this.toTransactionDetails(),        //itemDetails = this.toItemDetails(),
+
+fun Prevod.toTransactionUiState(isEntryValid: Boolean = false): TransactionUiState = TransactionUiState(
+    transactionDetails = this.toTransactionDetails(),
     isEntryValid = isEntryValid
 )
 
 
-/**
- * Extension function to convert [Item] to [ItemDetails]
- */
 fun Prevod.toTransactionDetails(): TranscactionDetails = TranscactionDetails(
     id = id,
     nazov = nazov,
